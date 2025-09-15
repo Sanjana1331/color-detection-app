@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
-import cv2
 
 # ---------------------------
 # Load colors dataset
@@ -37,7 +36,7 @@ def get_color_name(R, G, B, df_colors):
 # ---------------------------
 # Streamlit App
 # ---------------------------
-st.title("🎨 Color Detection App")
+st.title("🎨 Color Detection App (Pillow Version)")
 
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
@@ -47,15 +46,16 @@ if uploaded_file is not None:
     
     st.write("Input pixel coordinates (X, Y) to detect color:")
 
-    # Convert PIL to OpenCV format
-    img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+    # Convert image to RGB
+    img_rgb = img.convert("RGB")
+    pixels = img_rgb.load()
     
     # Input pixel coordinates
     x = st.number_input("X-coordinate", min_value=0, max_value=img.width-1, value=50)
     y = st.number_input("Y-coordinate", min_value=0, max_value=img.height-1, value=50)
     
     if st.button("Detect Color"):
-        b, g, r = img_cv[y, x]
+        r, g, b = pixels[x, y]
         rgb_text = f"RGB: ({r}, {g}, {b})"
         hex_text = f"HEX: #{r:02x}{g:02x}{b:02x}"
         cname = get_color_name(r, g, b, df_colors)
