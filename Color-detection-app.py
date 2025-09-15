@@ -36,7 +36,7 @@ def get_color_name(R, G, B, df_colors):
 # ---------------------------
 # Streamlit App
 # ---------------------------
-st.title("🎨 Color Detection App (Pillow Version)")
+st.title("🎨 Color Detection App")
 
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
